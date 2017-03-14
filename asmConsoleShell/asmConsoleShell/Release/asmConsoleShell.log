@@ -1,0 +1,18 @@
+﻿Build started 2/16/2017 12:11:57 AM.
+     1>Project "c:\Users\nathan\documents\visual studio 2012\Projects\asmConsoleShell\asmConsoleShell\asmConsoleShell.vcxproj" on node 2 (Build target(s)).
+     1>_MASM:
+         Assembling ..\..\..\..\cs201\shell.asm...
+         cmd.exe /C "C:\Users\nathan\AppData\Local\Temp\tmp344c7404e4ba44d99c43dd5833fcf11e.cmd"
+         ml.exe /c /nologo /Zi /Fo"Release\shell.obj" /W3 /errorReport:prompt  /Ta..\..\..\..\cs201\shell.asm
+     1>..\..\..\..\cs201\shell.asm(5): warning A4011: multiple .MODEL directives found : .MODEL ignored
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"c:\users\nathan\documents\visual studio 2012\Projects\asmConsoleShell\Release\asmConsoleShell.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"c:\users\nathan\documents\visual studio 2012\Projects\asmConsoleShell\Release\asmConsoleShell.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"c:\users\nathan\documents\visual studio 2012\Projects\asmConsoleShell\Release\asmConsoleShell.lib" /MACHINE:X86 /SAFESEH Release\shell.obj
+         LINK : /LTCG specified but no code generation required; remove /LTCG from the link command line to improve linker performance
+     1>shell.obj : error LNK2026: module unsafe for SAFESEH image.
+     1>Irvine32.lib(Irvine32.obj) : error LNK2026: module unsafe for SAFESEH image.
+     1>c:\users\nathan\documents\visual studio 2012\Projects\asmConsoleShell\Release\asmConsoleShell.exe : fatal error LNK1281: Unable to generate SAFESEH image.
+     1>Done Building Project "c:\Users\nathan\documents\visual studio 2012\Projects\asmConsoleShell\asmConsoleShell\asmConsoleShell.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:01.44
