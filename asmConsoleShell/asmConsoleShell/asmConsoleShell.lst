@@ -1,5 +1,5 @@
-Microsoft (R) Macro Assembler Version 11.00.60610.1	    03/14/17 11:26:29
-..\..\Lab1\Lab1.asm					     Page 1 - 1
+Microsoft (R) Macro Assembler Version 11.00.60610.1	    03/14/17 14:04:36
+..\..\Lab1\Lab1b.asm					     Page 1 - 1
 
 
 				;------------------------------------------------------------------------------------
@@ -30,102 +30,98 @@ Microsoft (R) Macro Assembler Version 11.00.60610.1	    03/14/17 11:26:29
 
 				.386
 				.model flat, stdcall
-..\..\Lab1\Lab1.asm(11) : warning A4011:multiple .MODEL directives found : .MODEL ignored
+..\..\Lab1\Lab1b.asm(11) : warning A4011:multiple .MODEL directives found : .MODEL ignored
 				.stack 4096
 
 
  00000000			.const
- = 00000000				NULL				equ				0;
-					
- = 00000001				sunday				equ				1;
- = 00000002			    monday				equ				2;
- = 00000003			    tuesday				equ				3;
- = 00000004			    wednesday			equ				4;
- = 00000005			    thursday			equ				5;
- = 00000006			    friday				equ				6;
- = 00000007				saturday			equ				7;
+					;Defines null to be 0
+ = 00000000			    NULL				equ				0
 
 
  00000000			.data?
- 00000000 00000000			_D					dword			?
- 00000004 00000000			_Y					dword			?
+					;declares uninitilized varibles
+ 00000000 00000000		    _D					dword			?
+ 00000004 00000000		    _Y					dword           ?			
+ 00000008 00000000			_m5B				dword			?
+ 0000000C 00000000			_m12C				dword			?
+ 00000010 00000000			_m31D				dword			?
 
 
  00000000			.data
- 00000000 01 02 03 04 05	    days				byte			sunday, monday, tuesday, wednesday, thursday, friday, saturday
-	   06 07
 					
- 00000007 50 6C 65 61 73		msg_enterValue		byte			"Please enter a value: ", NULL
+					;declare string variables with default values
+ 00000000 50 6C 65 61 73		msg_enterValue		byte			"Please enter a value: ", NULL
 	   65 20 65 6E 74
 	   65 72 20 61 20
 	   76 61 6C 75 65
 	   3A 20 00
- 0000001E 54 68 65 20 65		msg_output			byte			"The expression with A = 5, B = 7, C = 12 and D = ", NULL
-	   78 70 72 65 73
-	   73 69 6F 6E 20
-	   77 69 74 68 20
-	   41 20 3D 20 35
-	   2C 20 42 20 3D
-	   20 37 2C 20 43
-	   20 3D 20 31 32
-	   20 61 6E 64 20
-	   44 20 3D 20 00
- 00000050 20 69 73 20 59		msg_output_Y		byte			" is Y = ", NULL
+ 00000017 59 28 41 2C 42		msg_output			byte			"Y(A,B,C, D) = ", NULL
+	   2C 43 2C 20 44
+	   29 20 3D 20 00
+ 00000026 20 69 73 20 59		msg_output_Y		byte			" is Y = ", NULL
 	   20 3D 20 00
-				   
- 00000059 00000005			_A					dword			5 
- 0000005D 00000007			_B					dword			7
- 00000061 0000000C			_C					dword			12
+					
+					;Declare variables with default values
+ 0000002F 00000005			_A					dword			5
+ 00000033 00000007			_B					dword			7	
+ 00000037 0000000C			_C					dword			12	
 
 
  00000000			.code
  00000000			    main    proc
 				            
-						
- 00000000  BA 00000007 R				mov			edx,			offset		msg_enterValue
+							;prompts user to enter value, collects the value and stores it in '_D'
+ 00000000  BA 00000000 R				mov			edx,			offset		msg_enterValue
  00000005  E8 00000000 E				call		writeString
  0000000A  E8 00000000 E				call		readInt
  0000000F  A3 00000000 R				mov			_D,				eax
 
-
- 00000014  A1 00000059 R				mov			eax,			_A
- 00000019  03 05 0000005D R				add			eax,			_B
- 0000001F  03 C0					add			eax,			eax
-						
+							;moves _B to eax, multiplies it by 5, and stores it in _m5B
+ 00000014  A1 00000033 R				mov			eax,			_B
+ 00000019  6B C0 05					imul		eax,			5
+ 0000001C  A3 00000008 R				mov			_m5B,			eax			
 							
- 00000021  2B 05 00000061 R				sub			eax,			_C
- 00000027  2B 05 00000061 R				sub			eax,			_C
-						
-
- 0000002D  2B 05 00000000 R				sub			eax,			_D
- 00000033  2B 05 00000000 R				sub			eax,			_D 
- 00000039  2B 05 00000000 R				sub			eax,			_D
 							
- 0000003F  A3 00000004 R				mov			_Y,				eax
-
-
- 00000044  BA 0000001E R				mov			edx,			offset		 msg_output
- 00000049  E8 00000000 E				call		writeString
+							;moves _A to eax, subtracts _m5B, multiplies it by 21, and moves result to _Y
+ 00000021  A1 0000002F R				mov			eax,			_A
+ 00000026  2B 05 00000008 R				sub			eax,			_m5B
+ 0000002C  6B C0 15					imul		eax,			21
+ 0000002F  A3 00000004 R				mov			_Y,				eax
 							
- 0000004E  A1 00000000 R				mov			eax,			_D
- 00000053  E8 00000000 E				call		writeInt
 
-
- 00000058  BA 00000050 R				mov			edx,			offset		 msg_output_Y
- 0000005D  E8 00000000 E				call		writeString
+							;moves _C to eax, multiplies it by 12, add _Y, and moves result to _Y
+ 00000034  A1 00000037 R				mov			eax,			_C
+ 00000039  6B C0 0C					imul		eax,			12
+ 0000003C  03 05 00000004 R				add			eax,			_Y
+ 00000042  A3 00000004 R				mov			_Y,				eax
 							
- 00000062  A1 00000004 R				mov			eax,			_Y
- 00000067  E8 00000000 E				call		writeInt
 
- 0000006C  E8 00000000 E				call		crlf
+							;moves _D to eax, multiples it by 31
+ 00000047  A1 00000000 R				mov			eax,			_D
+ 0000004C  6B C0 1F					imul		eax,			31
 
 
- 00000071  C3						ret 0
+							;subtracts eax from _Y
+ 0000004F  29 05 00000004 R				sub			_Y,				eax
+							
 
- 00000072			main        endp
+							;moves output message to edx, and prints it to screen
+ 00000055  BA 00000017 R				mov			edx,			offset		msg_output
+ 0000005A  E8 00000000 E				call		writeString
+							
+ 0000005F  A1 00000004 R				mov			eax,			_Y
+ 00000064  E8 00000000 E				call		writeInt
+
+ 00000069  E8 00000000 E				call		crlf
+
+
+ 0000006E  C3						ret 0
+
+ 0000006F			main        endp
 				            end     main
-Microsoft (R) Macro Assembler Version 11.00.60610.1	    03/14/17 11:26:29
-..\..\Lab1\Lab1.asm					     Symbols 2 - 1
+Microsoft (R) Macro Assembler Version 11.00.60610.1	    03/14/17 14:04:36
+..\..\Lab1\Lab1b.asm					     Symbols 2 - 1
 
 
 
@@ -219,9 +215,9 @@ Segments and Groups:
 CONST  . . . . . . . . . . . . .	32 Bit	 00000000 Para	  Public  'CONST'	 ReadOnly
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
-_BSS . . . . . . . . . . . . . .	32 Bit	 00000008 Para	  Public  'BSS'  
-_DATA  . . . . . . . . . . . . .	32 Bit	 00000065 Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 00000072 Para	  Public  'CODE'	
+_BSS . . . . . . . . . . . . . .	32 Bit	 00000014 Para	  Public  'BSS'  
+_DATA  . . . . . . . . . . . . .	32 Bit	 0000003B Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 0000006F Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -328,7 +324,7 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000072 Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000006F Public STDCALL
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
@@ -547,18 +543,19 @@ VK_UP  . . . . . . . . . . . . .	Number	 00000026h
 WINDOW_BUFFER_SIZE_EVENT . . . .	Number	 00000004h   
 WriteConsoleOutputCharacter  . .	Text   	 WriteConsoleOutputCharacterA
 WriteConsole . . . . . . . . . .	Text   	 WriteConsoleA
-_A . . . . . . . . . . . . . . .	DWord	 00000059 _DATA	
-_B . . . . . . . . . . . . . . .	DWord	 0000005D _DATA	
-_C . . . . . . . . . . . . . . .	DWord	 00000061 _DATA	
+_A . . . . . . . . . . . . . . .	DWord	 0000002F _DATA	
+_B . . . . . . . . . . . . . . .	DWord	 00000033 _DATA	
+_C . . . . . . . . . . . . . . .	DWord	 00000037 _DATA	
 _D . . . . . . . . . . . . . . .	DWord	 00000000 _BSS	
 _Y . . . . . . . . . . . . . . .	DWord	 00000004 _BSS	
+_m12C  . . . . . . . . . . . . .	DWord	 0000000C _BSS	
+_m31D  . . . . . . . . . . . . .	DWord	 00000010 _BSS	
+_m5B . . . . . . . . . . . . . .	DWord	 00000008 _BSS	
 black  . . . . . . . . . . . . .	Number	 00000000h   
 blue . . . . . . . . . . . . . .	Number	 00000001h   
 brown  . . . . . . . . . . . . .	Number	 00000006h   
 cyan . . . . . . . . . . . . . .	Number	 00000003h   
-days . . . . . . . . . . . . . .	Byte	 00000000 _DATA	
 exit . . . . . . . . . . . . . .	Text   	 INVOKE ExitProcess,0
-friday . . . . . . . . . . . . .	Number	 00000006h   
 gray . . . . . . . . . . . . . .	Number	 00000008h   
 green  . . . . . . . . . . . . .	Number	 00000002h   
 lightBlue  . . . . . . . . . . .	Number	 00000009h   
@@ -568,16 +565,10 @@ lightGreen . . . . . . . . . . .	Number	 0000000Ah
 lightMagenta . . . . . . . . . .	Number	 0000000Dh   
 lightRed . . . . . . . . . . . .	Number	 0000000Ch   
 magenta  . . . . . . . . . . . .	Number	 00000005h   
-monday . . . . . . . . . . . . .	Number	 00000002h   
-msg_enterValue . . . . . . . . .	Byte	 00000007 _DATA	
-msg_output_Y . . . . . . . . . .	Byte	 00000050 _DATA	
-msg_output . . . . . . . . . . .	Byte	 0000001E _DATA	
+msg_enterValue . . . . . . . . .	Byte	 00000000 _DATA	
+msg_output_Y . . . . . . . . . .	Byte	 00000026 _DATA	
+msg_output . . . . . . . . . . .	Byte	 00000017 _DATA	
 red  . . . . . . . . . . . . . .	Number	 00000004h   
-saturday . . . . . . . . . . . .	Number	 00000007h   
-sunday . . . . . . . . . . . . .	Number	 00000001h   
-thursday . . . . . . . . . . . .	Number	 00000005h   
-tuesday  . . . . . . . . . . . .	Number	 00000003h   
-wednesday  . . . . . . . . . . .	Number	 00000004h   
 white  . . . . . . . . . . . . .	Number	 0000000Fh   
 wsprintf . . . . . . . . . . . .	Text   	 wsprintfA
 yellow . . . . . . . . . . . . .	Number	 0000000Eh   

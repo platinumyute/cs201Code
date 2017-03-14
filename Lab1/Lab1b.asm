@@ -15,29 +15,22 @@ includelib C:\Users\nathan\Documents\ASMIO\ASMIO\asm32.lib
 .const
 	;Defines null to be 0
     NULL				equ				0
-	
-	;Define the names of the days of the week to be string constants 
-    sunday				equ				"sunday"		, NULL		
-    monday				equ				"monday"		, NULL		
-    tuesday				equ				"tuesday"		, NULL			
-    wednesday			equ				"wednesday"		, NULL	
-    thursday			equ				"thursday"		, NULL	
-    friday				equ				"friday"		, NULL
-    saturday			equ				"saturday"		, NULL
 
 
 .data?
 	;declares uninitilized varibles
-    _D					dword	         ?
-    _Y					dword            ?			
+    _D					dword			?
+    _Y					dword           ?			
+	_m5B				dword			?
+	_m12C				dword			?
+	_m31D				dword			?
+
 
 .data
-    ; declares an array 'days' with days of the week constants
-	days				byte			sunday, monday, tuesday, wednesday, thursday, friday, saturday
 	
 	;declare string variables with default values
 	msg_enterValue		byte			"Please enter a value: ", NULL
-	msg_output			byte			"The expression with A = 5, B = 7, C = 12 and D = ", NULL
+	msg_output			byte			"Y(A,B,C, D) = ", NULL
 	msg_output_Y		byte			" is Y = ", NULL
 	
 	;Declare variables with default values
@@ -55,37 +48,37 @@ includelib C:\Users\nathan\Documents\ASMIO\ASMIO\asm32.lib
 			call		readInt
 			mov			_D,				eax
 
-
-			;moves _A  to eax register, adds _B to eax (_A + _B), eax to eax (_A + _B) * 2
+			;moves _B to eax, multiplies it by 5, and stores it in _m5B
+			mov			eax,			_B
+			imul		eax,			5
+			mov			_m5B,			eax			
+			
+			
+			;moves _A to eax, subtracts _m5B, multiplies it by 21, and moves result to _Y
 			mov			eax,			_A
-			add			eax,			_B	
-			add			eax,			eax
-			
-
-			;subtracts	_C from eax twice
-			sub			eax,			_C	
-			sub			eax,			_C
-		
-
-			;subtracts  _D from eax trice (three times)
-			sub			eax,			_D
-			sub			eax,			_D
-			sub			eax,			_D
-			
-
-			;moves value in eax to _Y
+			sub			eax,			_m5B
+			imul		eax,			21
 			mov			_Y,				eax
-
-
-			;
-			mov			edx,			offset		 msg_output
-			call		writeString
 			
+
+			;moves _C to eax, multiplies it by 12, add _Y, and moves result to _Y
+			mov			eax,			_C
+			imul		eax,			12
+			add			eax,			_Y
+			mov			_Y,				eax
+			
+
+			;moves _D to eax, multiples it by 31
 			mov			eax,			_D
-			call		writeInt
+			imul		eax,			31
 
 
-			mov			edx,			offset		 msg_output_Y
+			;subtracts eax from _Y
+			sub			_Y,				eax
+			
+
+			;moves output message to edx, and prints it to screen
+			mov			edx,			offset		msg_output
 			call		writeString
 			
 			mov			eax,			_Y

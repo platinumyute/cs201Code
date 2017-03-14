@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <MASM Include="..\..\Lab1\Lab1.asm" />
+    <MASM Include="..\..\Lab1\Lab1b.asm" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4700EE82-82F4-4C7F-B8BE-30D7613A3EB9}</ProjectGuid>
