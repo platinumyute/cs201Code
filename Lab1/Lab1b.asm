@@ -1,7 +1,8 @@
 ;------------------------------------------------------------------------------------
-; Zailabdeen, Hoon, Choi : lab 1
+; Zailabdeen, Hoon, Choi : lab 1b
 ;
-; Description: this program prints a string,integer and hexadecimal to the screen
+; Description: this program computes an arithmetic equation using four variables A,B,C,D
+;				with D being entered by user.
 ;-------------------------------------------------------------------------------------
 
 include C:\Users\nathan\Documents\ASMIO\ASMIO\asm32.inc
