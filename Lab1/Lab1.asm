@@ -15,7 +15,6 @@ includelib C:\Users\nathan\Documents\ASMIO\ASMIO\asm32.lib
 .const
 	;Defines null to be 0
     NULL				equ				0
-	
 	;Define the names of the days of the week to be string constants 
     sunday				equ				"sunday"		, NULL		
     monday				equ				"monday"		, NULL		
@@ -35,6 +34,7 @@ includelib C:\Users\nathan\Documents\ASMIO\ASMIO\asm32.lib
     ; declares an array 'days' with days of the week constants
 	days				byte			sunday, monday, tuesday, wednesday, thursday, friday, saturday
 	
+	
 	;declare string variables with default values
 	msg_enterValue		byte			"Please enter a value: ", NULL
 	msg_output			byte			"The expression with A = 5, B = 7, C = 12 and D = ", NULL
@@ -48,7 +48,8 @@ includelib C:\Users\nathan\Documents\ASMIO\ASMIO\asm32.lib
 
 .code
     main    proc
-            
+
+
 			;prompts user to enter value, collects the value and stores it in '_D'
 			mov			edx,			offset		msg_enterValue
 			call		writeString

@@ -1,9 +1,15 @@
-﻿Build started 3/27/2017 12:19:01 AM.
+﻿Build started 3/31/2017 3:04:40 PM.
      1>Project "C:\Users\nathan\Documents\GitHub\cs201Code\asmConsoleShell\asmConsoleShell\asmConsoleShell.vcxproj" on node 2 (Build target(s)).
-     1>Link:
+     1>_MASM:
+         Assembling ..\..\Lab1\Lab1.asm...
+         cmd.exe /C "C:\Users\nathan\AppData\Local\Temp\tmp5e33b5f477d44042acc518f79b68d819.cmd"
+         ml.exe /c /nologo /Zi /Fo"Debug\Lab1.obj" /Fl"asmConsoleShell.lst" /I "C:\ASMIO" /W3 /errorReport:prompt  /Ta..\..\Lab1\Lab1.asm
+     1>..\..\Lab1\Lab1.asm(11): warning A4011: multiple .MODEL directives found : .MODEL ignored
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\nathan\Documents\GitHub\cs201Code\asmConsoleShell\Debug\asmConsoleShell.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\nathan\Documents\GitHub\cs201Code\asmConsoleShell\Debug\asmConsoleShell.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /ENTRY:"main" /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\nathan\Documents\GitHub\cs201Code\asmConsoleShell\Debug\asmConsoleShell.lib" /MACHINE:X86 /SAFESEH:NO Debug\Lab1.obj
          asmConsoleShell.vcxproj -> C:\Users\nathan\Documents\GitHub\cs201Code\asmConsoleShell\Debug\asmConsoleShell.exe
      1>Done Building Project "C:\Users\nathan\Documents\GitHub\cs201Code\asmConsoleShell\asmConsoleShell\asmConsoleShell.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.13
+Time Elapsed 00:00:01.15

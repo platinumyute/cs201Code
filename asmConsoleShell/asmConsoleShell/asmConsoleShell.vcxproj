@@ -10,9 +10,6 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <MASM Include="..\..\Lab2\Lab2.asm" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4700EE82-82F4-4C7F-B8BE-30D7613A3EB9}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
