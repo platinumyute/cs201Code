@@ -1,13 +1,15 @@
-Microsoft (R) Macro Assembler Version 11.00.60610.1	    03/31/17 15:04:40
-..\..\Lab1\Lab1.asm					     Page 1 - 1
+Microsoft (R) Macro Assembler Version 11.00.60610.1	    04/03/17 01:03:39
+..\..\Lab3\Lab3.asm					     Page 1 - 1
 
 
 				;------------------------------------------------------------------------------------
-				; Zailabdeen, Hoon, Choi : lab 1
+				; Zailabdeen, Hoon, Choi : lab 3
 				;
-				; Description: this program prints a string,integer and hexadecimal to the screen
+				; Description:	1. This program generates a value between two user input values,
+				;				2. Creates a single dimensional array that holds 25 numbers. Each number will be randomly
+				;				   generated and range from 1 – 40, and prints sum
 				;-------------------------------------------------------------------------------------
-
+				
 				include C:\Users\nathan\Documents\ASMIO\ASMIO\asm32.inc
 			      C ; Include file for Irvine32.lib             (Irvine32.inc)
 			      C 
@@ -27,130 +29,128 @@ Microsoft (R) Macro Assembler Version 11.00.60610.1	    03/31/17 15:04:40
 			      C .LIST
 			      C 
 				includelib C:\Users\nathan\Documents\ASMIO\ASMIO\asm32.lib	
-
+				
 				.386
 				.model flat, stdcall
-..\..\Lab1\Lab1.asm(11) : warning A4011:multiple .MODEL directives found : .MODEL ignored
+..\..\Lab3\Lab3.asm(13) : warning A4011:multiple .MODEL directives found : .MODEL ignored
 				.stack 4096
-
-
+				
+				
  00000000			.const
-					;Defines null to be 0
- = 00000000			    NULL				equ				0
-					;Define the names of the days of the week to be string constants 
- = "sunday"		, NULL	    sunday				equ				"sunday"		, NULL		
- = "monday"		, NULL	    monday				equ				"monday"		, NULL		
- = "tuesday"		, NULL	    tuesday				equ				"tuesday"		, NULL			
- = "wednesday"		, NULL	    wednesday			equ				"wednesday"		, NULL	
- = "thursday"		, NULL	    thursday			equ				"thursday"		, NULL	
- = "friday"		, NULL	    friday				equ				"friday"		, NULL
- = "saturday"		, NULL	    saturday			equ				"saturday"		, NULL
-
-
+							;Defines null to be 0
+ = 00000000						 NULL				equ				0
+				
  00000000			.data?
-					;declares uninitilized varibles
- 00000000 00000000		    _D					dword	         ?
- 00000004 00000000		    _Y					dword            ?			
-
+							;declares uninitilized varibles
+							
+ 00000000 00000000					_randVal			dword			?
+ 00000004  00000019 [					_array				dword			25 dup(?)
+	    00000000
+	   ]
+					
  00000000			.data
-				    ; declares an array 'days' with days of the week constants
- 00000000 73 75 6E 64 61		days				byte			sunday, monday, tuesday, wednesday, thursday, friday, saturday
-	   79 00 6D 6F 6E
-	   64 61 79 00 74
-	   75 65 73 64 61
-	   79 00 77 65 64
-	   6E 65 73 64 61
-	   79 00 74 68 75
-	   72 73 64 61 79
-	   00 66 72 69 64
-	   61 79 00 73 61
-	   74 75 72 64 61
-	   79 00
-					
- 00000039 00000004			mn					dword				2 / 2 * 4
-					
-					;declare string variables with default values
- 0000003D 50 6C 65 61 73		msg_enterValue		byte			"Please enter a value: ", NULL
-	   65 20 65 6E 74
-	   65 72 20 61 20
-	   76 61 6C 75 65
-	   3A 20 00
- 00000054 54 68 65 20 65		msg_output			byte			"The expression with A = 5, B = 7, C = 12 and D = ", NULL
-	   78 70 72 65 73
-	   73 69 6F 6E 20
-	   77 69 74 68 20
-	   41 20 3D 20 35
-	   2C 20 42 20 3D
-	   20 37 2C 20 43
-	   20 3D 20 31 32
-	   20 61 6E 64 20
-	   44 20 3D 20 00
- 00000086 20 69 73 20 59		msg_output_Y		byte			" is Y = ", NULL
-	   20 3D 20 00
-					
-					;Declare variables with default values
- 0000008F 00000005			_A					dword			5
- 00000093 00000007			_B					dword			7	
- 00000097 0000000C			_C					dword			12	
-
-
+ 00000000 00000019					_array_size			dword				25
+ 00000004 00000064					_max				dword				100
+ 00000008 00000001					_min				dword				1
+ 0000000C 74 68 65 20 73				_msg_small			byte				"the smallest value is ", NULL	
+	   6D 61 6C 6C 65
+	   73 74 20 76 61
+	   6C 75 65 20 69
+	   73 20 00
+ 00000023 74 68 65 20 6C				_msg_large			byte				"the largest value is ", NULL	
+	   61 72 67 65 73
+	   74 20 76 61 6C
+	   75 65 20 69 73
+	   20 00
+				
+				LoadArray proto array:PTR dword, aSize:dword, rand_max:dword, rand_min:dword
+				PrintSmallestAndLargestElements	proto, array: PTR dword, aSize: dword, msg_small:  PTR byte, msg_large: PTR byte
+				
  00000000			.code
  00000000			    main    proc
- 00000000  A1 00000039 R	            mov eax, mn
- 00000005  E8 00000000 E				call writeInt
-
-
-							;prompts user to enter value, collects the value and stores it in '_D'
- 0000000A  BA 0000003D R				mov			edx,			offset		msg_enterValue
- 0000000F  E8 00000000 E				call		writeString
- 00000014  E8 00000000 E				call		readInt
- 00000019  A3 00000000 R				mov			_D,				eax
-
-
-							;moves _A  to eax register, adds _B to eax (_A + _B), eax to eax (_A + _B) * 2
- 0000001E  A1 0000008F R				mov			eax,			_A
- 00000023  03 05 00000093 R				add			eax,			_B	
- 00000029  03 C0					add			eax,			eax
+				            
+							invoke	LoadArray, ADDR _array, _array_size, _max, _min
+							invoke	PrintSmallestAndLargestElements, ADDR _array, _array_size, ADDR _msg_small, ADDR _msg_large
+				
 							
-
-							;subtracts	_C from eax twice
- 0000002B  2B 05 00000097 R				sub			eax,			_C	
- 00000031  2B 05 00000097 R				sub			eax,			_C
-						
-
-							;subtracts  _D from eax trice (three times)
- 00000037  2B 05 00000000 R				sub			eax,			_D
- 0000003D  2B 05 00000000 R				sub			eax,			_D
- 00000043  2B 05 00000000 R				sub			eax,			_D
+ 00000036  C3						ret 0
+ 00000037			main        endp
+				
+				;***********************************************************************************
+				;Proc Name  :	LoadArray
+				;Description:   Populates an array with random values between min and max ranges
+				;Paramaters :	pointer to dword, dword, dword, dword
+				;Return     :
+				;***********************************************************************************
+ 00000037			LoadArray	proc	uses eax ecx esi, array:PTR dword, aSize:dword, max:dword, min:dword
 							
-
-							;moves value in eax to _Y
- 00000049  A3 00000004 R				mov			_Y,				eax
-
-
-							;
- 0000004E  BA 00000054 R				mov			edx,			offset		 msg_output
- 00000053  E8 00000000 E				call		writeString
+ 0000003D  E8 00000000 E				call	randomize
+ 00000042  8B 75 08					mov		esi,	array
+ 00000045  8B 4D 0C					mov		ecx,	aSize
+				
+ 00000048  8B 45 10		FILL:		mov		eax,	max
+ 0000004B  2B 45 14					sub		eax,	min
+ 0000004E  83 C0 01					add		eax,	1			 
+ 00000051  E8 00000000 E				call	randomRange
+ 00000056  03 45 14					add		eax,	min		
+ 00000059  89 06					mov		[esi],	eax
+ 0000005B  83 C6 04					add		esi,	TYPE dword
 							
- 00000058  A1 00000000 R				mov			eax,			_D
- 0000005D  E8 00000000 E				call		writeInt
-
-
- 00000062  BA 00000086 R				mov			edx,			offset		 msg_output_Y
- 00000067  E8 00000000 E				call		writeString
+ 0000005E  E2 E8					loop	FILL
+							ret 
+				
+ 00000067			LoadArray	endp
+				
+				
+				;*********************************************************************************
+				;Proc Name  : PrintSmallestAndLargestElements
+				;Description: Finds and prints the smallest and largest value in a given array
+				;Paramaters : Pointer to dword, dword, dword, dword
+				;Return     : eax: smallest value, ebx: largest value
+				;**********************************************************************************
+ 00000067			PrintSmallestAndLargestElements	proc uses ecx esi, array: PTR dword, aSize: dword, msg_small: PTR byte, msg_large: PTR byte
+				
+							;will hold smallest value in eax, and largest value in ebx;
+ 0000006C  8B 75 08					mov		esi,	array
+ 0000006F  8B 4D 0C					mov		ecx,	aSize
+ 00000072  8B 06					mov		eax,	[esi]	
+ 00000074  8B 1E					mov		ebx,	[esi]
+						   
+ 00000076			FindSmallest:
+ 00000076  39 06					cmp		[esi],	eax
+ 00000078  7D 02					JGE		FindLargest
 							
- 0000006C  A1 00000004 R				mov			eax,			_Y
- 00000071  E8 00000000 E				call		writeInt
-
- 00000076  E8 00000000 E				call		crlf
-
-
- 0000007B  C3						ret 0
-
- 0000007C			main        endp
+ 0000007A  8B 06					mov		eax,	[esi]
+				
+ 0000007C			FindLargest:	
+ 0000007C  39 1E					cmp		[esi],	ebx
+ 0000007E  7E 02					JLE		repeatSteps
+				
+ 00000080  8B 1E					mov		ebx,	[esi]
+				
+ 00000082			repeatSteps:
+ 00000082  83 C6 04					add		esi,	TYPE dword
+ 00000085  E2 EF					loop	FindSmallest
+					
+ 00000087  8B 55 10					mov edx, msg_small
+ 0000008A  E8 00000000 E				call writeString
+ 0000008F  E8 00000000 E				call writeInt
+							
+ 00000094  E8 00000000 E				call crlf
+ 00000099  E8 00000000 E				call crlf
+							
+ 0000009E  8B 55 14					mov edx, msg_large
+ 000000A1  E8 00000000 E				call writeString
+ 000000A6  8B C3					mov eax, ebx
+ 000000A8  E8 00000000 E				call writeInt
+				
+				
+							ret
+				
+ 000000B3			PrintSmallestAndLargestElements endp
 				            end     main
-Microsoft (R) Macro Assembler Version 11.00.60610.1	    03/31/17 15:04:40
-..\..\Lab1\Lab1.asm					     Symbols 2 - 1
+Microsoft (R) Macro Assembler Version 11.00.60610.1	    04/03/17 01:03:39
+..\..\Lab3\Lab3.asm					     Symbols 2 - 1
 
 
 
@@ -244,9 +244,9 @@ Segments and Groups:
 CONST  . . . . . . . . . . . . .	32 Bit	 00000000 Para	  Public  'CONST'	 ReadOnly
 FLAT . . . . . . . . . . . . . .	GROUP
 STACK  . . . . . . . . . . . . .	32 Bit	 00001000 Para	  Stack	  'STACK'	 
-_BSS . . . . . . . . . . . . . .	32 Bit	 00000008 Para	  Public  'BSS'  
-_DATA  . . . . . . . . . . . . .	32 Bit	 0000009B Para	  Public  'DATA'	
-_TEXT  . . . . . . . . . . . . .	32 Bit	 0000007C Para	  Public  'CODE'	
+_BSS . . . . . . . . . . . . . .	32 Bit	 00000068 Para	  Public  'BSS'  
+_DATA  . . . . . . . . . . . . .	32 Bit	 00000039 Para	  Public  'DATA'	
+_TEXT  . . . . . . . . . . . . .	32 Bit	 000000B3 Para	  Public  'CODE'	
 
 
 Procedures, parameters, and locals:
@@ -293,6 +293,12 @@ HeapDestroy  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 HeapFree . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 HeapSize . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 IsDigit  . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+LoadArray  . . . . . . . . . . .	P Near	 00000037 _TEXT	Length= 00000030 Public STDCALL
+  array  . . . . . . . . . . . .	DWord	 bp + 00000008
+  aSize  . . . . . . . . . . . .	DWord	 bp + 0000000C
+  max  . . . . . . . . . . . . .	DWord	 bp + 00000010
+  min  . . . . . . . . . . . . .	DWord	 bp + 00000014
+  FILL . . . . . . . . . . . . .	L Near	 00000048 _TEXT	
 LocalFree  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 MessageBoxA  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 MsgBoxAsk  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -301,6 +307,14 @@ OpenInputFile  . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 ParseDecimal32 . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 ParseInteger32 . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 PeekConsoleInputA  . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
+PrintSmallestAndLargestElements 	P Near	 00000067 _TEXT	Length= 0000004C Public STDCALL
+  array  . . . . . . . . . . . .	DWord	 bp + 00000008
+  aSize  . . . . . . . . . . . .	DWord	 bp + 0000000C
+  msg_small  . . . . . . . . . .	DWord	 bp + 00000010
+  msg_large  . . . . . . . . . .	DWord	 bp + 00000014
+  FindSmallest . . . . . . . . .	L Near	 00000076 _TEXT	
+  FindLargest  . . . . . . . . .	L Near	 0000007C _TEXT	
+  repeatSteps  . . . . . . . . .	L Near	 00000082 _TEXT	
 Random32 . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 RandomRange  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 Randomize  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
@@ -353,7 +367,7 @@ WriteStackFrame  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External
 WriteString  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteToFile  . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
 WriteWindowsMsg  . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External STDCALL
-main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 0000007C Public STDCALL
+main . . . . . . . . . . . . . .	P Near	 00000000 _TEXT	Length= 00000037 Public STDCALL
 printf . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 scanf  . . . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
 wsprintfA  . . . . . . . . . . .	P Near	 00000000 FLAT	Length= 00000000 External C
@@ -572,18 +586,18 @@ VK_UP  . . . . . . . . . . . . .	Number	 00000026h
 WINDOW_BUFFER_SIZE_EVENT . . . .	Number	 00000004h   
 WriteConsoleOutputCharacter  . .	Text   	 WriteConsoleOutputCharacterA
 WriteConsole . . . . . . . . . .	Text   	 WriteConsoleA
-_A . . . . . . . . . . . . . . .	DWord	 0000008F _DATA	
-_B . . . . . . . . . . . . . . .	DWord	 00000093 _DATA	
-_C . . . . . . . . . . . . . . .	DWord	 00000097 _DATA	
-_D . . . . . . . . . . . . . . .	DWord	 00000000 _BSS	
-_Y . . . . . . . . . . . . . . .	DWord	 00000004 _BSS	
+_array_size  . . . . . . . . . .	DWord	 00000000 _DATA	
+_array . . . . . . . . . . . . .	DWord	 00000004 _BSS	
+_max . . . . . . . . . . . . . .	DWord	 00000004 _DATA	
+_min . . . . . . . . . . . . . .	DWord	 00000008 _DATA	
+_msg_large . . . . . . . . . . .	Byte	 00000023 _DATA	
+_msg_small . . . . . . . . . . .	Byte	 0000000C _DATA	
+_randVal . . . . . . . . . . . .	DWord	 00000000 _BSS	
 black  . . . . . . . . . . . . .	Number	 00000000h   
 blue . . . . . . . . . . . . . .	Number	 00000001h   
 brown  . . . . . . . . . . . . .	Number	 00000006h   
 cyan . . . . . . . . . . . . . .	Number	 00000003h   
-days . . . . . . . . . . . . . .	Byte	 00000000 _DATA	
 exit . . . . . . . . . . . . . .	Text   	 INVOKE ExitProcess,0
-friday . . . . . . . . . . . . .	Text   	 "friday"		, NULL
 gray . . . . . . . . . . . . . .	Number	 00000008h   
 green  . . . . . . . . . . . . .	Number	 00000002h   
 lightBlue  . . . . . . . . . . .	Number	 00000009h   
@@ -593,17 +607,7 @@ lightGreen . . . . . . . . . . .	Number	 0000000Ah
 lightMagenta . . . . . . . . . .	Number	 0000000Dh   
 lightRed . . . . . . . . . . . .	Number	 0000000Ch   
 magenta  . . . . . . . . . . . .	Number	 00000005h   
-mn . . . . . . . . . . . . . . .	DWord	 00000039 _DATA	
-monday . . . . . . . . . . . . .	Text   	 "monday"		, NULL
-msg_enterValue . . . . . . . . .	Byte	 0000003D _DATA	
-msg_output_Y . . . . . . . . . .	Byte	 00000086 _DATA	
-msg_output . . . . . . . . . . .	Byte	 00000054 _DATA	
 red  . . . . . . . . . . . . . .	Number	 00000004h   
-saturday . . . . . . . . . . . .	Text   	 "saturday"		, NULL
-sunday . . . . . . . . . . . . .	Text   	 "sunday"		, NULL
-thursday . . . . . . . . . . . .	Text   	 "thursday"		, NULL
-tuesday  . . . . . . . . . . . .	Text   	 "tuesday"		, NULL
-wednesday  . . . . . . . . . . .	Text   	 "wednesday"		, NULL
 white  . . . . . . . . . . . . .	Number	 0000000Fh   
 wsprintf . . . . . . . . . . . .	Text   	 wsprintfA
 yellow . . . . . . . . . . . . .	Number	 0000000Eh   
