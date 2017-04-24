@@ -1,9 +1,9 @@
 ;------------------------------------------------------------------------------------------------------------
 ; Zailabdeen, Hoon, Choi : lab 6
 ;
-; Description:	 1. This program will get a input from user between 10-100
-;				 2. Print all prime numbers from 2 to user value,
-;				 3. Align output
+; Description:	 1. This program will get an input from the user between 10-100.
+;				 2. Print all prime numbers from 2 to user value.
+;				 3. Align output.
 ;------------------------------------------------------------------------------------------------------------
 
 include C:\Users\nathan\Documents\ASMIO\ASMIO\asm32.inc
